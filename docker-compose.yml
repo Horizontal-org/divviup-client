@@ -18,6 +18,14 @@ services:
     networks:
       - divviup-client-network
 
+  # collector:
+  #   image: us-west2-docker.pkg.dev/divviup-artifacts-public/janus/janus_interop_collector:0.7.0-prerelease-2
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
+  #   environment:
+  #     RUST_BACKTRACE: 1 
+
 networks:
   divviup-client-network:
 

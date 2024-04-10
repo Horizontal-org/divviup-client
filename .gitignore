@@ -16,4 +16,5 @@
 
 .env
 ./pkg/envs/.env
+./scripts/global-collect-config.json
 tmp/

@@ -9,10 +9,13 @@ type Vdaf struct {
 }
 
 type Task struct {
-	ID        string `gorm:"primarykey"`
+	ID        uint `gorm:"primarykey" json:"id"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
+	DivviUpId string `gorm:"unique"`
 	Name string `json:"name"`
-	Vdaf Vdaf `gorm:"embedded;embeddedPrefix:vdaf_"`
-	CollectorCredentialId string `json:"collector_credential_id"`
+	Vdaf Vdaf `gorm:"embedded;embeddedPrefix:vdaf_" json:"vdaf"`
+	// TODO add if batch or time based 
+	TaskEvents []TaskEvent
+	CollectorWorker CollectorWorker
 }

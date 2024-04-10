@@ -1,13 +1,16 @@
 package main
 
 import (
+	"divviup-client/pkg/collector"
 	"divviup-client/pkg/common/db"
-	"divviup-client/pkg/tasks"
+	"divviup-client/pkg/task"
 	"runtime"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )
+
 func main() {
     viper.SetConfigFile("./pkg/common/envs/.env")
     viper.ReadInConfig()
@@ -17,6 +20,8 @@ func main() {
     d := db.Init(dbUrl)
 		
     router := gin.Default()
+    router.Use(cors.Default())
+    
     router.GET("/health", func(c *gin.Context) {
         c.JSON(200, gin.H{
             "message": "OK",
@@ -28,7 +33,8 @@ func main() {
     })
 
     // REGISTER ROUTES 
-	tasks.RegisterRoutes(router, d)
+	task.RegisterRoutes(router, d)
+    collector.RegisterRoutes(router, d)
 
     router.Run(port)
 }

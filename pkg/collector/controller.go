@@ -1,4 +1,4 @@
-package tasks
+package collector
 
 import (
     "github.com/gin-gonic/gin"
@@ -14,7 +14,7 @@ func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
         DB: db,
     }
 
-    routes := r.Group("/tasks")
-    routes.GET("/sync", h.SyncTasks)
-    // routes.POST("/", h.AddOpinion)
+    routes := r.Group("/collector")
+    routes.GET("/test", h.TestCollector)
+    routes.POST("/manual", h.ManualRunCollector)
 }
