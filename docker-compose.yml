@@ -17,6 +17,16 @@ services:
       - db-data:/var/lib/mysql
     networks:
       - divviup-client-network
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      REDIS_PASSWORD: "${REDIS_PASSWORD}"
+    expose:
+      - '6379'
+    ports:
+      - 6379:6379
+    volumes: 
+      - redis-data:/data
 
   # collector:
   #   image: us-west2-docker.pkg.dev/divviup-artifacts-public/janus/janus_interop_collector:0.7.0-prerelease-2
@@ -31,3 +41,4 @@ networks:
 
 volumes:
   db-data:
+  redis-data:

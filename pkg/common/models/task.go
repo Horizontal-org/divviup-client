@@ -15,7 +15,8 @@ type Task struct {
 	DivviUpId string `gorm:"unique"`
 	Name string `json:"name"`
 	Vdaf Vdaf `gorm:"embedded;embeddedPrefix:vdaf_" json:"vdaf"`
+	Starred bool
 	// TODO add if batch or time based 
 	TaskEvents []TaskEvent
-	CollectorWorker CollectorWorker
+	TaskJob TaskJob
 }

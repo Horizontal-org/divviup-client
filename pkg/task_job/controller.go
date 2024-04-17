@@ -1,4 +1,4 @@
-package task
+package taskjob
 
 import (
     "github.com/gin-gonic/gin"
@@ -14,8 +14,7 @@ func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
         DB: db,
     }
 
-    routes := r.Group("/task")
-    routes.GET("/sync", h.SyncTasks)
-    routes.GET("/starred", h.GetStarredTasks)
-    routes.GET("/events", h.GetTaskEvents)
+    routes := r.Group("/taskjob")
+    routes.POST("/add", h.AddTaskJob)
+    routes.POST("/delete", h.DeleteTaskJob)
 }

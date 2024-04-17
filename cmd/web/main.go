@@ -4,6 +4,7 @@ import (
 	"divviup-client/pkg/collector"
 	"divviup-client/pkg/common/db"
 	"divviup-client/pkg/task"
+	taskjob "divviup-client/pkg/task_job"
 	"runtime"
 
 	"github.com/gin-contrib/cors"
@@ -34,6 +35,7 @@ func main() {
 
     // REGISTER ROUTES 
 	task.RegisterRoutes(router, d)
+    taskjob.RegisterRoutes(router, d)
     collector.RegisterRoutes(router, d)
 
     router.Run(port)

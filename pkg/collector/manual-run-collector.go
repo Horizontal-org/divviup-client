@@ -4,13 +4,14 @@ import (
 	"divviup-client/pkg/common/models"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
 
 type ManualRunCollectorRequestBody struct {
-	TaskId string `json:"task_id" binding:"required"`
+	TaskId uint `json:"task_id" binding:"required"`
 	VdafType string `json:"type" binding:"required"`
 }
 
@@ -27,7 +28,7 @@ func (h handler) ManualRunCollector(c *gin.Context) {
 	arguments := CollectorArguments{
 		// make manifest env variable
 		Manifest: "/home/juan/code/janus-0.7.0-prerelease-2/Cargo.toml",
-		TaskId: body.TaskId,
+		TaskId: strconv.FormatUint(uint64(body.TaskId), 10),
 		VdafType: body.VdafType,
 		LeaderUrl: "https://dap-07-1.api.divviup.org/",
 	}
@@ -38,6 +39,7 @@ func (h handler) ManualRunCollector(c *gin.Context) {
 
 	var taskEvent models.TaskEvent
 	taskEvent.TaskID = body.TaskId
+	
 	if (collectorSuccess) {
 		taskEvent.Value = collectorOut
 	} else {
