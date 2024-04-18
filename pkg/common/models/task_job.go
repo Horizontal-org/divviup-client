@@ -9,8 +9,8 @@ type TaskJob struct {
 	TaskID uint // foreign key
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	Cron string
-	TaskName string
-	TaskType string
+	Cron string `json:"cron"`
+	TaskName string `json:"task_name"`
+ 	TaskType string `json:"task_type"`
 	DivviUpId string
 }

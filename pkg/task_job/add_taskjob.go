@@ -29,6 +29,7 @@ func (h handler) AddTaskJob(c *gin.Context) {
 	h.DB.Save(&task)
 
 	taskJob := models.TaskJob{
+		//TODO CHaNGE WITH REAL DATA
 		Cron: "* * * * *",
 		TaskName: task.Name,
 		TaskType: task.Vdaf.Type,
@@ -37,4 +38,9 @@ func (h handler) AddTaskJob(c *gin.Context) {
 	}
 
 	h.DB.Create(&taskJob)
+
+	var tasks []models.Task
+	h.DB.Find(&tasks)
+
+	c.JSON(http.StatusOK, &tasks)
 }

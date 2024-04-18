@@ -38,12 +38,12 @@ func (h handler) SyncTasks(c *gin.Context) {
 		}).Create(&tasks)
 
 
-		log.Print("algo")
-		// h.DB.Create(&tasks)
 		truthIds := GetIds(tasks)
 		h.DB.Where("divvi_up_id NOT IN ?", truthIds).Delete(&models.Task{})
 
-    c.JSON(http.StatusOK, &tasks)
+		var syncedTasks []models.Task
+		h.DB.Find(&syncedTasks)
+    c.JSON(http.StatusOK, syncedTasks)
 }
 
 func GetTasksFromApi(c *gin.Context, apiTasks *[]ApiTask) {

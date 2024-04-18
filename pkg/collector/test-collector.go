@@ -111,7 +111,7 @@ func RunMockCollector(arg *CollectorArguments) (outString string, outStatus bool
 
 // Clean divviup api response
 func CleanOutput (output string, vdaf string) (string) {
-	data := strings.Split(strings.TrimSpace(output), ": ")
+	data := strings.Split(strings.TrimSpace(strings.TrimSuffix(output, "\n")), ": ")
 
 
 	return data[1]

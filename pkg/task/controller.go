@@ -18,4 +18,5 @@ func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
     routes.GET("/sync", h.SyncTasks)
     routes.GET("/starred", h.GetStarredTasks)
     routes.GET("/events", h.GetTaskEvents)
+    routes.GET("/", h.GetTasks)
 }

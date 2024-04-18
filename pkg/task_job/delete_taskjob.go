@@ -32,4 +32,9 @@ func (h handler) DeleteTaskJob(c *gin.Context) {
 		h.DB.Delete(&models.TaskJob{}, task.TaskJob.ID)
 	}
 
+
+	var tasks []models.Task
+	h.DB.Find(&tasks)
+
+	c.JSON(http.StatusOK, &tasks)
 }
