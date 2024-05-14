@@ -27,13 +27,13 @@ ManifestPath="/manifest/Cargo.toml"
 TaskId="1"
 Leader="https://wearehorizontal.org"
 Vdaf="remove"
-
+CredentialFile="./file.json"
 
 ############################################################
 # Process the input options. Add options as needed.        #
 ############################################################
 # Get the options
-while getopts "hm:t:l:V:" option; do
+while getopts "hm:t:l:V:c:" option; do
    case $option in
       h) # display Help
          Help
@@ -46,25 +46,21 @@ while getopts "hm:t:l:V:" option; do
         Leader=$OPTARG;;
       V)
         Vdaf=$OPTARG;;
+      c)
+        CredentialFile=$OPTARG;;
      \?) # Invalid option
          echo "Error: Invalid option"
          exit;;
    esac
 done
 
-
-# TODO make collector-credential env variable
-
+echo $CredentialFile
 set -x #echo on
 
-# DO THIS
-# OUTPUT=$(SOMETHING WITH ALOT -- \
-#   --OF LINES \
-#   --NOT SO MUCH)
 
 cargo run --release --manifest-path=$ManifestPath --bin collect -- \
   --task-id $TaskId \
   --leader $Leader \
   --vdaf $Vdaf \
-  --collector-credential-file /home/juan/code/janus-0.7.0-prerelease-2/global-collect-config.json \
+  --collector-credential-file $CredentialFile \
   --current-batch

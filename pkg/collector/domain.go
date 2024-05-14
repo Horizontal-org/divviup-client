@@ -5,4 +5,5 @@ type CollectorArguments struct {
 	VdafType string
 	TaskId string
 	LeaderUrl string
+	CredentialFile string
 }

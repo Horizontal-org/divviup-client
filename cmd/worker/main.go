@@ -19,7 +19,6 @@ var DB *gorm.DB
 func main() {
 	log.Println("WORKER")
 
-
 	viper.SetConfigFile("./pkg/common/envs/.env")
 	viper.ReadInConfig()
 
@@ -53,8 +52,8 @@ func handler(ctx context.Context, t *asynq.Task) error {
 			if err := json.Unmarshal(t.Payload(), &p); err != nil {
 				return err
 			}
-			collector.MockCollector(DB, p.TaskType, p.DivviUpId, p.TaskId)
 			log.Printf(" [*] RUN COLLECTOR %d", p.TaskName, p.TaskType, p.DivviUpId, p.TaskId)
+			collector.ScheduledCollector(DB, p.TaskType, p.DivviUpId, p.TaskId)
 	default:
 			return fmt.Errorf("unexpected task type: %s", t.Type())
 	}

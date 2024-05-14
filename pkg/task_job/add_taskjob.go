@@ -30,7 +30,7 @@ func (h handler) AddTaskJob(c *gin.Context) {
 
 	taskJob := models.TaskJob{
 		//TODO CHaNGE WITH REAL DATA
-		Cron: "* * * * *",
+		Cron: "0 */12 * * *",
 		TaskName: task.Name,
 		TaskType: task.Vdaf.Type,
 		TaskID: task.ID,

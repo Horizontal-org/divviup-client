@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 	"os/exec"
-	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"gorm.io/gorm"
 )
 
@@ -47,25 +47,22 @@ func (h handler) TestCollector(c *gin.Context) {
 func MockCollector(DB *gorm.DB, vdaf string, divviup string, taskid uint) {
 
 	arguments := CollectorArguments{
-		// make manifest env variable
-		Manifest: "/home/juan/code/janus-0.7.0-prerelease-2/Cargo.toml",
+		Manifest: viper.Get("JANUS_MANIFEST").(string),
 		TaskId: divviup,
-		VdafType: vdaf,
-		LeaderUrl: "https://dap-07-1.api.divviup.org/",
+		VdafType: vdaf,	
+		LeaderUrl: viper.Get("DIVVIUP_LEADER_URL").(string),
+		CredentialFile: viper.Get("COLLECTOR_CREDENTIAL_FILE").(string),
 	}
 
 
-	collectorOut, collectorSuccess := RunMockCollector(&arguments)
-	
-	// do some processing in real case, need to know what divviup actually returns
+	collectorOut, collectorSuccess := RunMockCollector(&arguments)	
 	taskEvent := models.TaskEvent{TaskID: taskid}
-	// {Name: "Jinzhu", Age: 18, Birthday: time.Now()}
+	taskEvent.Success = collectorSuccess
+	taskEvent.Output = collectorOut
 	
 	if collectorSuccess {
 		cleanOut := CleanOutput(collectorOut, vdaf)
 		taskEvent.Value = cleanOut
-	} else {
-		taskEvent.Error = collectorOut
 	}
 
 	DB.Create(&taskEvent)
@@ -93,6 +90,8 @@ func RunMockCollector(arg *CollectorArguments) (outString string, outStatus bool
 	parsedArgs = append(parsedArgs, arg.LeaderUrl)
 	parsedArgs = append(parsedArgs, "-V")
 	parsedArgs = append(parsedArgs, arg.VdafType)	
+	parsedArgs = append(parsedArgs, "-c")
+	parsedArgs = append(parsedArgs, arg.CredentialFile)	
 	cmd := exec.Command("./scripts/mock.sh", parsedArgs...)
 
 
@@ -107,12 +106,4 @@ func RunMockCollector(arg *CollectorArguments) (outString string, outStatus bool
 			return stderr.String(), false
 	}	
 	return outB.String(), true
-}
-
-// Clean divviup api response
-func CleanOutput (output string, vdaf string) (string) {
-	data := strings.Split(strings.TrimSpace(strings.TrimSuffix(output, "\n")), ": ")
-
-
-	return data[1]
 }
