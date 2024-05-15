@@ -23,18 +23,12 @@ services:
       REDIS_PASSWORD: "${REDIS_PASSWORD}"
     expose:
       - '6379'
+    networks:
+      - divviup-client-network
     ports:
       - 6379:6379
     volumes: 
       - redis-data:/data
-
-  # collector:
-  #   image: us-west2-docker.pkg.dev/divviup-artifacts-public/janus/janus_interop_collector:0.7.0-prerelease-2
-  #   restart: always
-  #   ports:
-  #     - 8080:8080
-  #   environment:
-  #     RUST_BACKTRACE: 1 
 
 networks:
   divviup-client-network:

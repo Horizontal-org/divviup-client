@@ -5,6 +5,7 @@ import (
 	"divviup-client/pkg/common/db"
 	"divviup-client/pkg/task"
 	taskjob "divviup-client/pkg/task_job"
+	"divviup-client/pkg/user"
 	"runtime"
 
 	"github.com/gin-contrib/cors"
@@ -21,7 +22,12 @@ func main() {
     d := db.Init(dbUrl)
 		
     router := gin.Default()
-    router.Use(cors.Default())
+
+    config := cors.DefaultConfig()
+    config.AllowAllOrigins = true
+    config.AllowHeaders = []string{"Authorization"}
+
+    router.Use(cors.New(config))
     
     router.GET("/health", func(c *gin.Context) {
         c.JSON(200, gin.H{
@@ -37,6 +43,7 @@ func main() {
 	task.RegisterRoutes(router, d)
     taskjob.RegisterRoutes(router, d)
     collector.RegisterRoutes(router, d)
-
+    user.RegisterRoutes(router, d)
+    
     router.Run(port)
 }

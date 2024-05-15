@@ -1,8 +1,10 @@
 package task
 
 import (
-    "github.com/gin-gonic/gin"
-    "gorm.io/gorm"
+	"divviup-client/pkg/common/middleware"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type handler struct {
@@ -14,7 +16,7 @@ func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
         DB: db,
     }
 
-    routes := r.Group("/task")
+    routes := r.Group("/task", middleware.TokenAuthMiddleware(db))
     routes.GET("/sync", h.SyncTasks)
     routes.GET("/starred", h.GetStarredTasks)
     routes.GET("/events", h.GetTaskEvents)

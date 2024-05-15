@@ -1,8 +1,10 @@
 package collector
 
 import (
-    "github.com/gin-gonic/gin"
-    "gorm.io/gorm"
+	"divviup-client/pkg/common/middleware"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type handler struct {
@@ -14,7 +16,7 @@ func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
         DB: db,
     }
 
-    routes := r.Group("/collector")
+    routes := r.Group("/collector", middleware.TokenAuthMiddleware(db))
     routes.GET("/test", h.TestCollector)
     routes.POST("/manual", h.ManualRunCollector)
 }

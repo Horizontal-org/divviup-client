@@ -1,4 +1,4 @@
-package taskjob
+package user
 
 import (
 	"divviup-client/pkg/common/middleware"
@@ -16,8 +16,7 @@ func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
         DB: db,
     }
 
-    routes := r.Group("/taskjob", middleware.TokenAuthMiddleware(db))
-    routes.POST("/add", h.AddTaskJob)
-    routes.POST("/delete", h.DeleteTaskJob)
-    routes.GET("/", h.GetTaskJob)
+    routes := r.Group("/user")
+    routes.GET("/check", h.CheckAuth, middleware.TokenAuthMiddleware(db))    
+    routes.POST("/login", h.Login)    
 }
